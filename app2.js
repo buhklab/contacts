@@ -1,13 +1,13 @@
-function initialize() {
+function initialize(){
     var status = "* Offline *";
-    if (navigator.onLine) {
-        status = "* Online *";
+    if(navigator.onLine){
+        status = "* Offline *";
         retrieveContacts();
-    } else {
-        const localStorage = window.localStorage;
-        if (localStorage) {
+    }else{
+        const localStorage = windwo.localStorage;
+        if(localStorage){
             const contacts = localStorage.getItem("contacts");
-            if (contacts) {
+            if(contacts){
                 displayContacts(JSON.parse(contacts));
             }
         }
@@ -16,48 +16,51 @@ function initialize() {
     document.getElementById("status").innerHTML = status;
 
     document.body.addEventListener(
-            "online",
-            function () {
-                document.getElementById("status").innerHTML = "Online";
-            },
-            false
-            );
-    document.body.addEventListener(
-            "offline",
-            function () {
-                document.getElementById("status").innerHTML = "Offline";
-            },
-            false
-            );
-}
+        "online", function(){
+            document.getElementById("status").innerHTML = "Online";
 
-function retrieveContacts() {
+        }, false);
+    
+    document.body.addEventListener(
+        "offline", function(){
+            document.getElementById("status").innerHTML = "Offline";
+
+        }, false);
+
+}  
+    
+
+
+
+
+function retrieveContacts(){
     const xhr = new XMLHttpRequest();
     const url = "contacts.json";
 
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === 4){
             var contacts = JSON.parse(xhr.response).contacts;
             displayContacts(contacts);
-
-            // Store contact data to localstorage
             const localStorage = window.localStorage;
-            if (localStorage) {
-                localStorage.setItem("contacts", JSON.stringify(contacts));
+            if(localStorage){
+               localStorage.setItem("contacts", JSON.stringify(contacts));
             }
+
         }
     };
-
     xhr.open("get", url);
     xhr.send();
+
 }
 
-function displayContacts(contacts) {
+function displayContacts(contacts){
     contacts.forEach(addRow);
+
+
 }
 
-function addRow(contact) {
-    var tcontent = document.getElementById("tcontent");
+function addRow(contact){
+    var tcontent = document.getElementById("tContent");
     var row = tcontent.insertRow();
 
     var nameCell = row.insertCell();
@@ -67,7 +70,7 @@ function addRow(contact) {
     var addressCell = row.insertCell();
     addressCell.setAttribute('data-label', "Address");
     addressCell.innerHTML = contact.address;
-
+    
     var emailCell = row.insertCell();
     emailCell.setAttribute('data-label', "Email");
     emailCell.innerHTML = contact.email;
